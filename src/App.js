@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AppRouter from "./routes/AppRouter";
 import "./App.css";
 import "tachyons";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function App() {
   const [regionList, setRegionList] = useState([]);
@@ -12,8 +13,7 @@ function App() {
   const [userLocation, setUserLocation] = useState([]);
   const [Loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
+  function getMapdata() {
     fetch("https://restcountries.com/v2/all")
       .then((response) => response.json())
       .then((countries) => {
@@ -38,6 +38,13 @@ function App() {
         });
       })
       .catch((error) => console.log(error));
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      getMapdata();
+    }, 2000);
   }, []);
 
   const findUniqRegions = (regionList) => {
@@ -46,24 +53,22 @@ function App() {
     );
   };
 
-  if (Loading) {
-    return <h1 className="f1 dark-blue b--dotted">...LOADING</h1>;
-  }
-
   const onSearchChange = (event) => {
     setSearchField(event.target.value.toLowerCase());
   };
 
   return (
-    <AppRouter
-      onSearchChange={onSearchChange}
-      regionList={regionList}
-      countryList={countryList}
-      flagList={flagList}
-      countries={countries}
-      searchField={searchField}
-      userLocation={userLocation}
-    />
+    <div>
+      <AppRouter
+        onSearchChange={onSearchChange}
+        regionList={regionList}
+        countryList={countryList}
+        flagList={flagList}
+        countries={countries}
+        searchField={searchField}
+        userLocation={userLocation}
+      />
+    </div>
   );
 }
 
