@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import AppRouter from "./routes/AppRouter";
 import "./App.css";
 import "tachyons";
-import PropagateLoader from "react-spinners/PropagateLoader";
+
+import loading_page from "./loading_page/loading_page";
 
 function App() {
   const [regionList, setRegionList] = useState([]);
@@ -59,15 +60,19 @@ function App() {
 
   return (
     <div>
-      <AppRouter
-        onSearchChange={onSearchChange}
-        regionList={regionList}
-        countryList={countryList}
-        flagList={flagList}
-        countries={countries}
-        searchField={searchField}
-        userLocation={userLocation}
-      />
+      {Loading === true ? (
+        <loading_page />
+      ) : (
+        <AppRouter
+          onSearchChange={onSearchChange}
+          regionList={regionList}
+          countryList={countryList}
+          flagList={flagList}
+          countries={countries}
+          searchField={searchField}
+          userLocation={userLocation}
+        />
+      )}
     </div>
   );
 }
